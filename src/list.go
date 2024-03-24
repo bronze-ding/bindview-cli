@@ -83,10 +83,10 @@ func (m model) View() string {
 
 func List(Download func(url string), newName string) {
 	var initModel = model{
-		todos: []string{"Bindview@2", "Bindview@3"},
+		todos: []string{"Bindview@3", "Bindview@3/Router"},
 		selected: map[int]string{
-			0: "http://rongwu.xyz:7900/bindview-Template-master.zip",
-			1: "http://rongwu.xyz:7900/bindview-Template-2.0.0.zip",
+			0: "http://rongwu.xyz:7900/bindview-Template-2.0.0.zip",
+			1: "http://rongwu.xyz:7900/bindview@3-Router.zip",
 		},
 		Download: Download,
 		newName:  newName,
