@@ -86,7 +86,7 @@ func List(Download func(url string), newName string) {
 		todos: []string{"Bindview@3", "Bindview@3/Router"},
 		selected: map[int]string{
 			0: "http://rongwu.xyz:7900/bindview-Template-2.0.0.zip",
-			1: "http://rongwu.xyz:7900/bindview@3-Router.zip",
+			1: "http://rongwu.xyz:7900/bindview3-Router.zip",
 		},
 		Download: Download,
 		newName:  newName,
