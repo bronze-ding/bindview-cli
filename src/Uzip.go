@@ -59,7 +59,7 @@ func Unzip(Path string, Zip *zip.Reader, newName string) error {
 	}
 
 	// 重命名
-	NewFileName(Zip.File[0].Name, newName)
+	NewFileName("bindview3-Template", newName)
 	// 解压完成
 	return nil
 }
