@@ -1,6 +1,7 @@
 package src
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"strings"
@@ -52,6 +53,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, nil
 }
 
+// View 显示
 func (m model) View() string {
 	if m.show {
 		var s strings.Builder
@@ -81,13 +83,53 @@ func (m model) View() string {
 	}
 }
 
+// json 结构体
+type configItem struct {
+	Name string `json:"name"`
+	Url  string `json:"url"`
+}
+
+// 模板数组
+var config []configItem
+
+// 读取 json 文件
+func rend(filePath string) error {
+	file, err := os.ReadFile(filePath)
+	if err != nil {
+		fmt.Println("读取文件错误:", err)
+		return err
+	}
+
+	// 解码JSON数组到切片
+	err = json.Unmarshal(file, &config)
+	if err != nil {
+		fmt.Println("解析JSON错误:", err)
+		return err
+	}
+
+	return nil
+}
+
+var todos []string
+var selected = map[int]string{}
+
+func init() {
+	err := rend("./config.json")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for i, item := range config {
+		fmt.Println(i, item)
+		todos = append(todos, item.Name)
+		selected[i] = item.Url
+	}
+}
+
 func List(Download func(url string), newName string) {
 	var initModel = model{
-		todos: []string{"Bindview@3", "Bindview@3/Router"},
-		selected: map[int]string{
-			0: "http://rongwu.xyz:7900/bindview-Template-2.0.0.zip",
-			1: "http://rongwu.xyz:7900/bindview3-Router.zip",
-		},
+		todos:    todos,
+		selected: selected,
 		Download: Download,
 		newName:  newName,
 		show:     false,
