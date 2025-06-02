@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -114,13 +115,31 @@ var todos []string
 var selected = map[int]string{}
 
 func init() {
-	err := rend("./config.json")
+
+	// 获取当前可执行文件的路径
+	exePath, err := os.Executable()
+	if err != nil {
+		fmt.Println("获取可执行文件路径错误:", err)
+		return
+	}
+
+	// 获取当前可执行文件所在的目录
+	exeDir := filepath.Dir(exePath)
+
+	configPath := filepath.Join(exeDir, "config.json")
+
+	// 检查文件是否存在
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		fmt.Println("文件 config.json 不存在于目录:", exeDir)
+		return
+	}
+
+	err = rend(configPath)
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	for i, item := range config {
-		fmt.Println(i, item)
 		todos = append(todos, item.Name)
 		selected[i] = item.Url
 	}
